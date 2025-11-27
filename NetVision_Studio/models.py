@@ -1,18 +1,33 @@
 from django.db import models
 
-# Create your models here.
 class Device(models.Model):
-    type = models.CharField(max_length=20, null=False, blank=False)
-    ip_device = models.GenericIPAddressField(unique=True)
-    hostname = models.CharField(max_length=50, blank=True, null=False, default='Device')
+    DEVICE_TYPES = (
+        ("switch", "Switch"),
+        ("multilayer", "Multilayer"),
+    )
+
+    hostname = models.CharField(max_length=100, unique=True)
+    ip_address = models.GenericIPAddressField(protocol='IPv4', unique=True)
+    device_type = models.CharField(max_length=20, choices=DEVICE_TYPES, default='switch')
+
+    def __str__(self):
+        return f"{self.hostname} ({self.ip_address})"
+
 
 class Interface(models.Model):
-    device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='id_device')
-    name = models.CharField(max_length=20, null=False, blank=False)
-    state = models.BooleanField(default=False)
+    device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='interfaces')
+    name = models.CharField(max_length=20)
+    state = models.BooleanField(default=False)  # True = up
     is_access = models.BooleanField(default=True)
-    native = models.PositiveIntegerField(default=1, null=False)
-    allowed_vlan = models.CharField(max_length=200, blank=True, null=True)
+    native = models.PositiveIntegerField(default=1)
+    allowed_vlan = models.CharField(max_length=200, blank=True, null=True)  # ejemplo: "10,20,30-40"
+
+    class Meta: # No puedes tener 2 interfaces (fa0/0) en el mismo dispositivo
+        unique_together = ('device', 'name')
+
+    def __str__(self):
+        return f"{self.device.hostname}-{self.name}"
+
 
 class TopologyLink(models.Model):
     device_a = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='link_a')
@@ -20,32 +35,56 @@ class TopologyLink(models.Model):
     device_b = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='link_b')
     interface_b = models.ForeignKey(Interface, on_delete=models.CASCADE, related_name='int_b')
 
+    def __str__(self):
+        return f"{self.device_a.hostname}:{self.interface_a.name} <--> {self.device_b.hostname}:{self.interface_b.name}"
+
+
 class Vlan(models.Model):
-    vlan_id = models.PositiveIntegerField(null=False, blank=False,)
-    name = models.CharField(max_length=20, null=False, blank=False)
+    vlan_id = models.PositiveIntegerField(unique=True)
+    name = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return f"VLAN {self.vlan_id} - {self.name}"
+
+
 
 class Vlan_IntAssignment(models.Model):
-    interface = models.ForeignKey(Interface, on_delete=models.CASCADE, related_name='assigned_Interfaces')
-    vlan = models.ForeignKey(Vlan, on_delete=models.CASCADE, related_name='assigned_vlan')
-    is_Native = models.BooleanField(default=False)
+    interface = models.ForeignKey(Interface, on_delete=models.CASCADE, related_name='vlan_assignment')
+    vlan = models.ForeignKey(Vlan, on_delete=models.CASCADE)
+    is_native = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.interface} -> VLAN {self.vlan.vlan_id} (Native={self.is_native})"
+
 
 class SyslogEvent(models.Model):
-    device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='device_logs')
-    timeStamp = models.DateTimeField(null=False, blank=False)
-    message = models.CharField(max_length=150, null=True, blank=True)
-    severity = models.PositiveIntegerField(null=False, blank=False)
+    device = models.ForeignKey(Device, on_delete=models.SET_NULL, null=True)
+    timestamp = models.DateTimeField()
+    message = models.TextField()
+    severity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.timestamp} - {self.device} - Sev {self.severity}"
+
 
 class Host(models.Model):
-    MAC = models.CharField(null=False, blank=True, max_lenght=17 unique=True)
-    ip_host = models.GenericIPAddressField(null=False, blank=False) #unique?
-    connected_toInt = models.ForeignKey(Interface, on_delete=models.CASCADE, related_name='int_connectedTo')
+    MAC = models.CharField(max_length=17, unique=True)
+    ip_host = models.GenericIPAddressField(protocol='IPv4')
+    connected_toInt = models.ForeignKey(Interface, on_delete=models.SET_NULL, null=True)
     first_seen = models.DateTimeField(auto_now_add=True)
-    first_seen = models.DateTimeField(auto_now=True)
+    last_seen = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.MAC} ({self.ip_host})"
+
 
 class ConfLog(models.Model):
-    interface = models.ForeignKey(Interface, on_delete=models.CASCADE, related_name='conf_interface')
-    prev_mode = models.CharField(null=False, blank=False max_length=20)
-    new_mode = models.CharField(null=False, blank=False max_length=20)
-    prev_native = models.CharField(null=False, blank=False max_length=20)
-    new_native = models.CharField(null=False, blank=False max_length=20)
+    interface = models.ForeignKey(Interface, on_delete=models.CASCADE)
+    prev_mode = models.CharField(max_length=20)   # access / trunk
+    new_mode = models.CharField(max_length=20)
+    prev_native = models.PositiveIntegerField()
+    new_native = models.PositiveIntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"[{self.timestamp}] {self.interface} mode {self.prev_mode} → {self.new_mode}"

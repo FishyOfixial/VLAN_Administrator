@@ -1,0 +1,179 @@
+/* Reset básico y fuente */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8; /* Azul muy pálido de fondo */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #0d47a1; /* Azul oscuro corporativo */
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav a {
+    color: #bbdefb;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Contenedor del formulario estilo tarjeta */
+form {
+    background-color: white;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #e1e8ed;
+}
+
+h2, h3 {
+    color: #1565c0; /* Azul medio para títulos */
+    border-bottom: 2px solid #e3f2fd;
+    padding-bottom: 10px;
+}
+
+/* Estilo de los Botones */
+button {
+    background-color: #1976d2; /* Azul vibrante */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 25px; /* Botones muy redondeados */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    background-color: #0d47a1; /* Azul más oscuro al pasar el mouse */
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Botones secundarios (como Regresar) */
+button.secondary {
+    background-color: #90caf9;
+    color: #0d47a1;
+}
+button.secondary:hover {
+    background-color: #64b5f6;
+}
+
+/* Estilo de Inputs y Labels */
+input[type="text"],
+input[type="number"] {
+    padding: 8px;
+    border: 1px solid #90caf9;
+    border-radius: 8px;
+    margin: 5px;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #1565c0;
+    box-shadow: 0 0 5px rgba(21, 101, 192, 0.3);
+}
+
+label {
+    font-weight: 500;
+    color: #455a64;
+    margin-right: 5px;
+}
+
+/* CLASE MAGICA: Para ocultar elementos */
+.hidden {
+    display: none;
+}
+
+/* Contenedores de opciones */
+#interfaces, #vlans {
+    background-color: #e3f2fd; /* Fondo azul muy claro para las secciones */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    border: 1px solid #bbdefb;
+    animation: fadeIn 0.5s;
+}
+
+/* Animación suave al aparecer */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* --- NUEVAS CLASES AGREGADAS PARA LIMPIAR EL HTML --- */
+
+/* Contenedor principal de los botones del menú (Ingresar/Administración) */
+.main-buttons-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 1. Clases de Inputs y Labels */
+
+/* Para separar el label 'Número' en la configuración de interfaces */
+.label-with-margin {
+    margin-left: 15px; 
+}
+
+/* Para los inputs de número pequeños (min/max interfaz) */
+.input-short {
+    width: 50px;
+}
+
+/* Para los inputs que ocupan todo el ancho (VLANs) */
+.input-full-width {
+    width: 100%;
+    box-sizing: border-box; /* Crucial para que el padding no desborde el 100% */
+}
+
+/* 2. Separadores y Botones Especiales */
+
+/* Separador horizontal (HR) para las Configuraciones Disponibles */
+.hr-separator {
+    border: 0;
+    border-top: 1px solid #ccc; 
+    margin-top: 15px; 
+    padding-top: 10px;
+}
+
+/* Botón de Aplicar Cambios (el que va al 100% en la parte de interfaces) */
+.button-full-width {
+    width: 100%;
+}
+
+/* Botón de Eliminar VLAN y Aplicar de Eliminar VLAN (Color Rojo) */
+.button-delete {
+    background-color: #d32f2f; /* Rojo fuerte */
+}
+
+.button-delete:hover {
+    background-color: #b71c1c; /* Rojo más oscuro al pasar el ratón */
+}
+
+/* 3. Contenedores Flex (Footer de VLANs) */
+
+/* Contenedores de botones de pie de página para VLANs (Regresar y Aplicar/Crear) */
+.footer-buttons-split {
+    display: flex;
+    justify-content: space-between; /* Para separar los botones */
+}

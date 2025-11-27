@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Switch Multicapa</title>
+    <link rel="stylesheet" href="../Styles/settings.css">     
+    <script src="../Script/estilo.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Switch Multicapa 1</h1>
+        <nav>
+            <a href="index.html">Inicio</a>
+        </nav>
+    </header>
+
+    <form action="" method="get">
+        <h2>Opciones de configuración</h2>
+        
+        <div class="main-buttons-container">
+            <button type="button" id="btn-show-interfaces">Ingresar a interfaces</button>
+            <button type="button" id="btn-show-vlans">Administración de VLANs</button>
+        </div>
+
+        <div id="interfaces" class="hidden">
+            <h3>Configuración de Interfaces</h3>
+            
+            <div id="interface-type-menu">
+                <button type="button" id="btn-unica">Interfaz Única</button>
+                <button type="button" id="btn-rango">Rango de interfaces</button>
+            </div>
+
+            <div id="config-unica" class="hidden sub-config-section">
+                <hr>
+                <h4>Interfaz Única</h4>
+                <label>Tipo de interfaz:</label>
+                <input type="radio" name="tipoInt" id="giga1"><label for="giga1">Gigabit</label>
+                <input type="radio" name="tipoInt" id="fast1"><label for="fast1">FastEthernet</label>
+                <label class="label-with-margin">Número:</label>
+                <input type="number" name="numInterfaz" min="1" max="24" class="input-short"><br><br>
+                
+                <button type="button" id="btn-siguiente-unica">Siguiente</button>
+                <button type="button" class="btn-regresar secondary">Regresar</button>
+            </div>
+
+            <div id="config-rango" class="hidden sub-config-section">
+                <hr>
+                <h4>Rango de Interfaces</h4>
+                <label>Tipo de interfaz:</label>
+                <input type="radio" name="tipoIntRango" id="giga2"><label for="giga2">Gigabit</label>
+                <input type="radio" name="tipoIntRango" id="fast2"><label for="fast2">FastEthernet</label><br><br>
+                <label>Del:</label><input type="number" name="intRangInicio" min="1" max="24" class="input-short">
+                <label>Al:</label><input type="number" name="intRangFin" min="1" max="24" class="input-short">
+                
+                <button type="button" id="btn-siguiente-rango">Siguiente</button>
+                <button type="button" class="btn-regresar secondary">Regresar</button>
+            </div>
+
+            <div id="config-disponible" class="hidden">
+                <hr class="hr-separator">
+                <h3>Configuraciones Disponibles</h3>
+                
+                <h4>Estado</h4>
+                <input type="radio" name ="estado" id="hab"><label for="hab">Habilitar</label>
+                <input type="radio" name ="estado" id="des"><label for="des">Deshabilitar</label>
+                
+                <h4>Modo</h4>
+                <input type="radio" name="modo" id="acc"><label for="acc">Acceso</label>
+                <input type="radio" name="modo" id="trunk"><label for="trunk">Troncal</label>
+                <br><br>
+                
+                <div class="footer-buttons">
+                    <button type="submit" class="button-full-width">Aplicar Cambios</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="vlans" class="hidden">
+            <h3>Gestión de VLANs</h3>
+            
+            <div id="vlan-type-menu">
+                <button type="button" id="btn-crear-vlan">Crear VLAN</button>
+                <button type="button" id="btn-eliminar-vlan" class="button-delete">Eliminar VLAN</button>
+            </div>
+
+            <div id="config-crear-vlan" class="hidden vlan-config-section">
+                <hr>
+                <h4>Crear VLAN</h4>
+                <label>Número de VLAN (1-255):</label>
+                <input type="number" name="numVLAN" min="1" max="255" class="input-full-width"><br>
+                
+                <label>Nombre de VLAN:</label>
+                <input type="text" name="nomVLAN" class="input-full-width"><br><br>
+                
+                <div class="footer-buttons-split">
+                    <button type="button" class="btn-vlan-regresar secondary">Regresar</button>
+                    <button type="submit">Crear y Aplicar</button>
+                </div>
+            </div>
+
+            <div id="config-eliminar-vlan" class="hidden vlan-config-section">
+                <hr>
+                <h4>Eliminar VLAN</h4>
+                <label>Numero de VLAN a Eliminar:</label>
+                <input type="number" name="numVLANElim" min="1" max="4094" class="input-full-width"><br><br>
+                
+                <div class="footer-buttons-split">
+                    <button type="button" class="btn-vlan-regresar secondary">Regresar</button>
+                    <button type="submit" class="button-delete">Eliminar y Aplicar</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <div id="console">
+        <h2>Configuraciones Actuales de Puertos</h2>
+
+    </div>
+</body>
+</html>

@@ -16,7 +16,7 @@
         </nav>
     </header>
 
-    <form action="" method="get">
+    <div>
         <h2>Opciones de configuración</h2>
         
         <div class="main-buttons-container">
@@ -85,7 +85,9 @@
                 <button type="button" id="btn-eliminar-vlan" class="button-delete">Eliminar VLAN</button>
             </div>
 
-            <div id="config-crear-vlan" class="hidden vlan-config-section">
+            <form id="config-crear-vlan" class="hidden vlan-config-section"
+            action="{% url 'create_vlan' id %}" method="POST">
+                {% csrf_token %}
                 <hr>
                 <h4>Crear VLAN</h4>
                 <label>Número de VLAN (1-255):</label>
@@ -98,9 +100,11 @@
                     <button type="button" class="btn-vlan-regresar secondary">Regresar</button>
                     <button type="submit">Crear y Aplicar</button>
                 </div>
-            </div>
+            </form>
 
-            <div id="config-eliminar-vlan" class="hidden vlan-config-section">
+            <form id="config-eliminar-vlan" class="hidden vlan-config-section"
+            action="{% url 'delete_vlan' id %}" method='POST'>
+                {% csrf_token %}
                 <hr>
                 <h4>Eliminar VLAN</h4>
                 <label>Numero de VLAN a Eliminar:</label>
@@ -110,10 +114,10 @@
                     <button type="button" class="btn-vlan-regresar secondary">Regresar</button>
                     <button type="submit" class="button-delete">Eliminar y Aplicar</button>
                 </div>
-            </div>
+            </form>
         </div>
 
-    </form>
+    </div>
     <div id="div-console">
         <h2>Configuraciones Actuales de Puertos</h2>
 

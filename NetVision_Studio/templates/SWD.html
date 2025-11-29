@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Switch Multicapa</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">     
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1.0">     
     <script src="{% static 'js/estilo.js' %}" defer></script>
 </head>
 <body>
@@ -15,8 +15,8 @@
             <a href="index.html">Inicio</a>
         </nav>
     </header>
-
-    <div>
+    
+    <div id="main">
         <h2>Opciones de configuración</h2>
         
         <div class="main-buttons-container">
@@ -85,7 +85,7 @@
                 <button type="button" id="btn-eliminar-vlan" class="button-delete">Eliminar VLAN</button>
             </div>
 
-            <form id="config-crear-vlan" class="hidden vlan-config-section"
+            <form id="config-crear-vlan" class="hidden"
             action="{% url 'create_vlan' id %}" method="POST">
                 {% csrf_token %}
                 <hr>
@@ -102,7 +102,7 @@
                 </div>
             </form>
 
-            <form id="config-eliminar-vlan" class="hidden vlan-config-section"
+            <form id="config-eliminar-vlan" class="hidden"
             action="{% url 'delete_vlan' id %}" method='POST'>
                 {% csrf_token %}
                 <hr>
@@ -116,7 +116,6 @@
                 </div>
             </form>
         </div>
-
     </div>
     <div id="div-console">
         <h2>Configuraciones Actuales de Puertos</h2>

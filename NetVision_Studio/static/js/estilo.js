@@ -3,15 +3,8 @@
     const divInterfaces = document.getElementById('interfaces');
     const divVlans = document.getElementById('vlans');
     
-    // BOTONES DE MENÚ SUPERIOR (Ya deben estar declarados en tu HTML principal)
-    // const btnInterfaces = document.getElementById('btn-show-interfaces');
-    // const btnVlans = document.getElementById('btn-show-vlans');
-    // Si no están, descomenta las líneas de arriba.
-
-    // **********************************************
-    // LÓGICA DE INTERFACES
-    // **********************************************
     
+
     // Elementos de la sección de Interfaces
     const menuInterfaces = document.getElementById('interface-type-menu');
     const btnUnica = document.getElementById('btn-unica');
@@ -21,7 +14,7 @@
     const configDisponible = document.getElementById('config-disponible');
     const btnSiguienteUnica = document.getElementById('btn-siguiente-unica');
     const btnSiguienteRango = document.getElementById('btn-siguiente-rango');
-
+    
     // Muestra la configuración UNICA
     btnUnica.addEventListener('click', () => {
         menuInterfaces.classList.add('hidden');
@@ -56,9 +49,6 @@
         });
     });
 
-    // **********************************************
-    // LÓGICA DE VLANS
-    // **********************************************
 
     // Elementos de la sección de VLANs
     const menuVlans = document.getElementById('vlan-type-menu');
@@ -90,9 +80,7 @@
         });
     });
 
-    // **********************************************
-    // LÓGICA DE MENÚ PRINCIPAL (Ingresar a Interfaces / Administración de VLANs)
-    // **********************************************
+    
     
     // Asegúrate de que las IDs de estos botones estén configuradas en tu HTML principal
     const btnShowInterfaces = document.getElementById('btn-show-interfaces');

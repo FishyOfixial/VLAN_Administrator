@@ -32,7 +32,8 @@
                 <button type="button" id="btn-rango">Rango de interfaces</button>
             </div>
 
-            <div id="config-unica" class="hidden sub-config-section">
+            <form id="config-unica" class="hidden sub-config-section"
+             action="" method="POST">
                 <hr>
                 <h4>Interfaz Única</h4>
                 <label>Tipo de interfaz:</label>
@@ -43,9 +44,29 @@
                 
                 <button type="button" id="btn-siguiente-unica">Siguiente</button>
                 <button type="button" class="btn-regresar secondary">Regresar</button>
-            </div>
+                
+                <div id="config-disponible" class="hidden">
+                    <hr class="hr-separator">
+                    <h3>Configuraciones Disponibles</h3>
 
-            <div id="config-rango" class="hidden sub-config-section">
+                    <h4>Estado</h4>
+                    <input type="radio" name="estadoUnica" id="hab-unica"><label for="hab-unica">Habilitar</label>
+                    <input type="radio" name="estadoUnica" id="des-unica"><label for="des-unica">Deshabilitar</label>
+
+                    <h4>Modo</h4>
+                    <input type="radio" name="modoUnica" id="acc-unica"><label for="acc-unica">Acceso</label>
+                    <input type="radio" name="modoUnica" id="trunk-unica"><label for="trunk-unica">Troncal</label>
+                    <br><br>
+
+                    <div class="footer-buttons">
+                        <button type="submit" class="button-full-width">Aplicar Cambios</button>
+                    </div>
+                </div>
+
+            </form>
+
+            <form id="config-rango" class="hidden sub-config-section"
+             action="" method="POST">
                 <hr>
                 <h4>Rango de Interfaces</h4>
                 <label>Tipo de interfaz:</label>
@@ -56,25 +77,27 @@
                 
                 <button type="button" id="btn-siguiente-rango">Siguiente</button>
                 <button type="button" class="btn-regresar secondary">Regresar</button>
-            </div>
 
-            <div id="config-disponible" class="hidden">
-                <hr class="hr-separator">
-                <h3>Configuraciones Disponibles</h3>
-                
-                <h4>Estado</h4>
-                <input type="radio" name ="estado" id="hab"><label for="hab">Habilitar</label>
-                <input type="radio" name ="estado" id="des"><label for="des">Deshabilitar</label>
-                
-                <h4>Modo</h4>
-                <input type="radio" name="modo" id="acc"><label for="acc">Acceso</label>
-                <input type="radio" name="modo" id="trunk"><label for="trunk">Troncal</label>
-                <br><br>
-                
-                <div class="footer-buttons">
-                    <button type="submit" class="button-full-width">Aplicar Cambios</button>
+                <div id="range-config-disponible" class="hidden">
+                    <hr class="hr-separator">
+                    <h3>Configuraciones Disponibles</h3>
+
+                    <h4>Estado</h4>
+                    <input type="radio" name="estadoRango" id="hab-rango"><label for="hab-rango">Habilitar</label>
+                    <input type="radio" name="estadoRango" id="des-rango"><label for="des-rango">Deshabilitar</label>
+
+                    <h4>Modo</h4>
+                    <input type="radio" name="modoRango" id="acc-rango"><label for="acc-rango">Acceso</label>
+                    <input type="radio" name="modoRango" id="trunk-rango"><label for="trunk-rango">Troncal</label>
+                    <br><br>
+
+                    <div class="footer-buttons">
+                        <button type="submit" class="button-full-width">Aplicar Cambios</button>
+                    </div>
                 </div>
-            </div>
+            </form>
+
+           
         </div>
 
         <div id="vlans" class="hidden">

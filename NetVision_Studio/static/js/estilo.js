@@ -3,52 +3,65 @@
     const divInterfaces = document.getElementById('interfaces');
     const divVlans = document.getElementById('vlans');
     
-    
-
+        
     // Elementos de la sección de Interfaces
     const menuInterfaces = document.getElementById('interface-type-menu');
     const btnUnica = document.getElementById('btn-unica');
     const btnRango = document.getElementById('btn-rango');
+
     const configUnica = document.getElementById('config-unica');
     const configRango = document.getElementById('config-rango');
+
     const configDisponible = document.getElementById('config-disponible');
+    const configDisponibleRange = document.getElementById('range-config-disponible');
+
     const btnSiguienteUnica = document.getElementById('btn-siguiente-unica');
     const btnSiguienteRango = document.getElementById('btn-siguiente-rango');
-    
+
     // Muestra la configuración UNICA
     btnUnica.addEventListener('click', () => {
         menuInterfaces.classList.add('hidden');
-        configRango.classList.add('hidden'); // Asegura que el otro esté oculto
+
+        configRango.classList.add('hidden');
+        configDisponibleRange.classList.add('hidden'); // Oculta la del rango
+
         configUnica.classList.remove('hidden');
-        configDisponible.classList.add('hidden'); // Oculta las disponibles al volver a empezar
+        configDisponible.classList.add('hidden'); // Oculta la disponible única
     });
 
     // Muestra la configuración RANGO
     btnRango.addEventListener('click', () => {
         menuInterfaces.classList.add('hidden');
-        configUnica.classList.add('hidden'); // Asegura que el otro esté oculto
+
+        configUnica.classList.add('hidden');
+        configDisponible.classList.add('hidden'); // Oculta la de única
+
         configRango.classList.remove('hidden');
-        configDisponible.classList.add('hidden'); // Oculta las disponibles al volver a empezar
+        configDisponibleRange.classList.add('hidden'); // Oculta la disponible rango
     });
 
-    // Acción para botones "SIGUIENTE" (Muestra Configuraciones Disponibles)
+    // Acción para botones "SIGUIENTE"
     btnSiguienteUnica.addEventListener('click', () => {
         configDisponible.classList.remove('hidden');
     });
-    btnSiguienteRango.addEventListener('click', () => {
-        configDisponible.classList.remove('hidden');
-    });
 
-    // Acción para botones "REGRESAR" (Vuelve al menú de Interfaces)
+    btnSiguienteRango.addEventListener('click', () => {
+        configDisponibleRange.classList.remove('hidden');
+    });
+    
+
+    // Acción para botones "REGRESAR"
     document.querySelectorAll('.btn-regresar').forEach(btn => {
         btn.addEventListener('click', () => {
             configUnica.classList.add('hidden');
             configRango.classList.add('hidden');
+
             configDisponible.classList.add('hidden');
-            menuInterfaces.classList.remove('hidden'); // Vuelve a mostrar el menú Interfaz Unica/Rango
+            configDisponibleRange.classList.add('hidden');
+
+            menuInterfaces.classList.remove('hidden');
         });
     });
-
 
     // Elementos de la sección de VLANs
     const menuVlans = document.getElementById('vlan-type-menu');

@@ -1,4 +1,4 @@
-from .models import Device, Vlan
+from .models import Device, Vlan, Interface
 from .ssh_client import SSHClient
 
 # Función privada para evitar repetir código.
@@ -41,3 +41,35 @@ def delete_vlan(device_id, vlan_id):
     ]
 
     return _run_vlan_command(device_id, commands)
+
+
+# Sincronizar puertos con la base de datos
+def sync_ports(device_id):
+    device = Device.objects.get(id=device_id)  # Obtenemos el dispositivo
+
+    commands = ["do show ip int brief"]
+    output = _run_vlan_command(device_id, commands)
+    lines = output.splitlines()  # Separamos el output en líneas
+
+    for line in lines[1:]:  # Saltamos el encabezado del show
+        parts = line.split()
+        if len(parts) < 6:  # Si la línea no tiene todos los campos, la ignoramos
+            continue
+
+        name = parts[0]  # Nombre de la interfaz (Ej: Gi0/1)
+        ip = parts[1]    # IP asignada (si tiene)
+        status = parts[4] == "up"  # True si la interfaz esta activa
+
+        # Crear la interfaz si no existe, o traerla si ya esta creada
+        interface, created = Interface.objects.get_or_create(
+            device=device,
+            name=name,
+            defaults={"state": status}
+        )
+
+        # Si ya existia, actualizamos el estado
+        if not created:
+            interface.state = status
+            interface.save()
+    
+    return "Sync completed"  # Regresamos confirmación

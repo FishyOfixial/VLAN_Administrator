@@ -51,11 +51,15 @@ def delete_vlan(request, id):
     # Eliminar la VLAN de la base de datos
     vlan.delete()
 
+    # Volvemos a rendereizar la pantalla de donde viene se envio el form
+    return redirect('multilayer', id)
 
 def switches_status(request):
+    #Acceder a todos los switches en la base de datos
     switches = Device.objects.filter(device_type='switch')
     data = []
 
+    #Acceder a las interfaces de cada switch
     for d in switches:
         interfaces = d.interfaces.all()
         device_data = {
@@ -67,3 +71,5 @@ def switches_status(request):
         }
         data.append(device_data)
     return JsonResponse(data, safe=False)
+
+

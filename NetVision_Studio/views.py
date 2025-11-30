@@ -32,7 +32,7 @@ def create_vlan(request, id):
     )
 
     # Enviar el comando para crear la vlan via SSH al multicapa con ese ID
-    add_vlan(id, vlan_id)
+    create_vlan_ssh(id, vlan_id)
 
     # Volvemos a rendereizar la pantalla de donde viene se envio el form
     return redirect('multilayer', id)
@@ -47,9 +47,10 @@ def delete_vlan(request, id):
     # Conseguir la VLAN de la base de datos
     vlan = get_object_or_404(Vlan, vlan_id=vlan_id)
     # Mandar el comando de eliminacion al multicapa
-    delete_vlan(id, vlan_id)
+    delete_vlan_ssh(id, vlan_id)
     # Eliminar la VLAN de la base de datos
     vlan.delete()
+
 
 def assign_vlan(request, id):
     if request.method != 'POST': # Si el metodo de carga no es POST, redirigimos a la carga del HTML
@@ -61,6 +62,7 @@ def assign_vlan(request, id):
     end = request.POST.get('intRangFin')
 
     vlan = get_object_or_404(Vlan, vlan_id=vlan_id)
+    device = get_object_or_404(Device, pk=id)
     
     # Ir recorriendo el rango de interfaces y asignandoles la VLAN
     for i in range(int(start), int(end)+1):
@@ -76,8 +78,14 @@ def assign_vlan(request, id):
         )
 
         # Mandar el comando de asignacion via SSH al switch de acceso
-        assign_vlan_to_interface(id, interface_name, vlan_id, type)
-    
+        assign_vlan_ssh(id, interface_name, vlan_id, type)
+
+        # Refrescar la IP del host conectado despues del cambio
+        refresh_host_for_interface(device, interface)
+
+    return redirect('access', id)
+
+
 def switches_status(request):
     #Acceder a todos los switches en la base de datos
     switches = Device.objects.filter(device_type='switch')
@@ -113,5 +121,5 @@ def change_port_status(request, id):
         interface.state = status
         interface.save()
 
-    change_on_off(id, interface_name, status)
+    change_port_status_ssh(id, interface_name, status)
 

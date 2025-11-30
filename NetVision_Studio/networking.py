@@ -1,5 +1,7 @@
-from .models import Device, Vlan, Interface
+import time
+from .models import Device, Vlan, Interface, Host
 from .ssh_client import SSHClient
+from .syslog.utils import *
 
 # Función privada para evitar repetir código.
 # Se conecta al dispositivo, manda comandos y regresa la respuesta.
@@ -21,7 +23,7 @@ def _run_vlan_command(device_id, commands):
 
 
 # Crear VLAN en el dispositivo
-def add_vlan(device_id, vlan_id):
+def create_vlan_ssh(device_id, vlan_id):
     vlan = Vlan.objects.get(vlan_id=vlan_id)
 
     commands = [
@@ -34,7 +36,7 @@ def add_vlan(device_id, vlan_id):
 
 
 # Borrar VLAN del dispositivo
-def delete_vlan(device_id, vlan_id):
+def delete_vlan_ssh(device_id, vlan_id):
     commands = [
         f"no vlan {vlan_id}",
         "exit"
@@ -42,7 +44,7 @@ def delete_vlan(device_id, vlan_id):
 
     return _run_vlan_command(device_id, commands)
 
-def assign_vlan_to_interface(id, interface_name, vlan_id, type):
+def assign_vlan_ssh(id, interface_name, vlan_id, type):
     if type == 'access':
         commands = [
             f"interface {interface_name}",
@@ -93,7 +95,7 @@ def sync_ports(device_id):
     
     return "Sync completed"  # Regresamos confirmación
 
-def change_on_off(id, interface_name, status): 
+def change_port_status_ssh(id, interface_name, status): 
     state = 'shutdown' if status else 'no shutdown'
     commands = [
             f"interface {interface_name}",
@@ -102,3 +104,38 @@ def change_on_off(id, interface_name, status):
         ]
 
     return _run_vlan_command(id, commands)
+
+def refresh_host_for_interface(device, interface):
+    time.sleep(4)
+    conn = None
+    try:
+        conn = SSHClient(device.hostname, device.ip_address, device.username, device.password)
+        conn.connect()
+    except:
+        print(f'SSH FAIL {device.hostname}')
+        return
+    
+    # Conseguir la MAC del host
+    mac_table = conn.send_command(f'show mac address-table interface {interface.name}')
+    mac = parse_mac(mac_table)
+
+    if not mac:
+        print(f'No MAC in {interface.name}')
+        conn.close()
+        return
+    
+    # Conseguir la IP del host
+    arp_table = conn.send_command('show arp')
+    ip = find_ip_for_mac(arp_table, mac)
+
+    conn.close()
+
+    # Actualizar/Crear el host en la BD
+    Host.objects.update_or_create(
+        MAC=mac,
+        defaults={
+            "ip_host": ip if ip else '0.0.0.0',
+            'connected_toInt': interface,
+        }
+    )
+    print(f'[HOST UPDATED] {mac} -> {ip} en {interface.name}')

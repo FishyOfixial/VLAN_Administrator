@@ -2,6 +2,7 @@ import socket
 from .parser import parse_syslog
 from ..models import Device, Interface, SyslogEvent
 from django.utils import timezone
+from .discover_hosts import handle_port_up
 
 def start_listener():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -49,3 +50,6 @@ def process_syslog(device_ip, raw_msg):
         interface.save()
     except Interface.DoesNotExist:
         pass
+
+    if is_up:
+        handle_port_up(device, interface)

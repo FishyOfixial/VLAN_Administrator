@@ -42,6 +42,25 @@ def delete_vlan(device_id, vlan_id):
 
     return _run_vlan_command(device_id, commands)
 
+def assign_vlan_to_interface(id, interface_name, vlan_id, type):
+    if type == 'access':
+        commands = [
+            f"interface {interface_name}",
+            "switchport mode access",
+            f"switchport access vlan {vlan_id}",
+            "exit"
+        ]
+    elif type == 'trunk':
+        commands = [
+            f"interface {interface_name}",
+            "switchport mode trunk",
+            f"switchport trunk allowed vlan add {vlan_id}",
+            "exit"
+        ]
+    else:
+        raise ValueError("Invalid interface type. Must be 'access' or 'trunk'.")
+
+    return _run_vlan_command(id, commands)
 
 # Sincronizar puertos con la base de datos
 def sync_ports(device_id):

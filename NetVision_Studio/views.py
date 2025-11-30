@@ -51,9 +51,33 @@ def delete_vlan(request, id):
     # Eliminar la VLAN de la base de datos
     vlan.delete()
 
-    # Volvemos a rendereizar la pantalla de donde viene se envio el form
-    return redirect('multilayer', id)
+def assign_vlan(request, id):
+    if request.method != 'POST': # Si el metodo de carga no es POST, redirigimos a la carga del HTML
+        return redirect('access', id)
 
+    type = request.POST.get('tipoIntRango')
+    vlan_id = request.POST.get('vlanAcceso')
+    start = request.POST.get('intRangInicio')
+    end = request.POST.get('intRangFin')
+
+    vlan = get_object_or_404(Vlan, vlan_id=vlan_id)
+    
+    # Ir recorriendo el rango de interfaces y asignandoles la VLAN
+    for i in range(int(start), int(end)+1):
+        interface_name = f"fa0/{i}"
+        #Verificar que la interfaz existe
+        interface = get_object_or_404(Interface, device_id=id, name=interface_name)
+
+        # Asignar la VLAN a la interfaz en la base de datos
+        Vlan_IntAssignment.objects.get_or_create(
+            interface=interface,
+            vlan=vlan,
+            defaults={'is_native': type == 'native'}
+        )
+
+        # Mandar el comando de asignacion via SSH al switch de acceso
+        assign_vlan_to_interface(id, interface_name, vlan_id, type)
+    
 def switches_status(request):
     #Acceder a todos los switches en la base de datos
     switches = Device.objects.filter(device_type='switch')

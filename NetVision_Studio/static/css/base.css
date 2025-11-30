@@ -1,0 +1,227 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8; 
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #0d47a1; 
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav a {
+    color: #bbdefb;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+
+#main{
+    background-color: white;
+    max-width: 800px;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #e1e8ed;
+    display: block;
+}
+
+h2, h3 {
+    color: #1565c0; 
+    border-bottom: 2px solid #e3f2fd;
+    padding-bottom: 10px;
+}
+
+
+button {
+    background-color: #1976d2; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 25px; 
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    background-color: #0d47a1; 
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button.secondary {
+    background-color: #90caf9;
+    color: #0d47a1;
+}
+button.secondary:hover {
+    background-color: #64b5f6;
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 8px;
+    border: 1px solid #90caf9;
+    border-radius: 8px;
+    margin: 5px;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #1565c0;
+    box-shadow: 0 0 5px rgba(21, 101, 192, 0.3);
+}
+
+label {
+    font-weight: 500;
+    color: #455a64;
+    margin-right: 5px;
+}
+
+
+.hidden {
+    display: none;
+}
+
+#interfaces, #vlans {
+    background-color: #e3f2fd; 
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    border: 1px solid #bbdefb;
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* --- NUEVAS CLASES AGREGADAS PARA LIMPIAR EL HTML --- */
+
+.main-buttons-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.label-with-margin {
+    margin-left: 15px; 
+}
+
+.input-short {
+    width: 50px;
+}
+
+.input-full-width {
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+
+.hr-separator {
+    border: 0;
+    border-top: 1px solid #ccc; 
+    margin-top: 15px; 
+    padding-top: 10px;
+}
+
+.button-full-width {
+    width: 100%;
+}
+
+.button-delete {
+    background-color: #d32f2f; 
+}
+
+.button-delete:hover {
+    background-color: #b71c1c; 
+}
+
+.footer-buttons-split {
+    display: flex;
+    justify-content: space-between; 
+}
+
+#div-console{
+    background-color: white;
+    max-width: 400px;
+    height: 600px;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #e1e8ed;
+    position: absolute; 
+    top: 7rem;         
+    right: 2rem;
+}
+
+main{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #e1e8ed;
+    position: absolute; 
+}
+#routers{
+    background-color: white;
+    width: 90%;
+    height: 30%;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #e1e8ed;
+    text-align: center;
+    display: block;
+}
+#distribution{
+    background-color: white;
+    width: 90%;
+    height: 30%;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #e1e8ed;
+    text-align: center;
+    display: block;
+}
+#accessLayer{
+    background-color: white;
+    width: 90%;
+    height: 30%;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #e1e8ed;
+    text-align: center;
+    display: block;
+}
+.device{
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+    display: inline-block;
+}

@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Switch de Acceso</title>
+    <title>Switch de Acceso {{id}}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">     
     <script src="{% static 'js/estilo_sw.js' %}" defer></script>
 </head>
 <body>
     <header>
-        <h1>Switch de Acceso 1</h1>
+        <h1>Switch de Acceso {{id}}</h1>
         <nav>
-            <a href="index.html">Topologia</a>
+            <a href="{% url 'index' %}">Topologia</a>
         </nav>
     </header>
 

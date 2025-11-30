@@ -12,7 +12,7 @@
      <header>
         <h1>Topologia</h1>
         <nav>
-            <a href="index.html">Topologia</a>
+            <a href="{% url 'index' %}">Topologia</a>
             <a href="">Syslog</a>
         </nav>
     </header>
@@ -24,12 +24,12 @@
             <img src="{% static 'resources/switch.png' %}" class="device">
         </div>
         <div id="distribution">
-            <a href="{%static 'templates/SWD.html' %}"><img src="{% static 'resources/multilayer.png'%}" class="device"></a>
-            <a href="SWD.html"><img src="{% static 'resources/multilayer.png'%}" class="device"></a>
+            <a href="{% url 'multilayer' 1 %}"><img src="{% static 'resources/multilayer.png'%}" class="device"></a>
+            <a href="{% url 'multilayer' 2 %}"><img src="{% static 'resources/multilayer.png'%}" class="device"></a>
         </div>
         <div id="accessLayer">
-            <a href="access.html"><img src="{% static 'resources/switch.png' %}" class="device"></a>
-            <a href="access.html"><img src="{% static 'resources/switch.png' %}" class="device"></a>
+            <a href={% url 'access' 1%}><img src="{% static 'resources/switch.png' %}" class="device"></a>
+            <a href={% url 'access' 2%}><img src="{% static 'resources/switch.png' %}" class="device"></a>
         </div>
     </main>
 </body>

@@ -3,8 +3,8 @@ from . import views
 
 # Les encargo que despues de cada path SIEMPRE pongan una coma --> path(),
 urlpatterns = [
-    path('<int:id>/', views.multilayer_HTML, name = 'multilayer'),
-    path('acceso/', views.access_HTML, name='access'),
+    path('multilayer/<int:id>/', views.multilayer_HTML, name = 'multilayer'),
+    path('acceso/<int:id>', views.access_HTML, name='access'),
     path('', views.index_HTML, name='index'),
     
     # Envio de formularios

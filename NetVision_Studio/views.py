@@ -9,8 +9,11 @@ def multilayer_HTML(request, id):
     }
     return render(request, "SWD.html", context)
 
-def access_HTML(request): 
-    return render(request, 'access.html')
+def access_HTML(request, id): 
+    context = {
+        'id': id
+    }
+    return render(request, 'access.html', context)
 
 def index_HTML(request):
     return render(request, 'index.html')
@@ -75,13 +78,12 @@ def assign_vlan(request, id):
         # Mandar el comando de asignacion via SSH al switch de acceso
         assign_vlan_to_interface(id, interface_name, vlan_id, type)
     
-
-
-
 def switches_status(request):
+    #Acceder a todos los switches en la base de datos
     switches = Device.objects.filter(device_type='switch')
     data = []
 
+    #Acceder a las interfaces de cada switch
     for d in switches:
         interfaces = d.interfaces.all()
         device_data = {
@@ -93,3 +95,5 @@ def switches_status(request):
         }
         data.append(device_data)
     return JsonResponse(data, safe=False)
+
+

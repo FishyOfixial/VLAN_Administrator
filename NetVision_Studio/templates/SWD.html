@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Switch Multicapa</title>
+    <title>Switch Multicapa {{id}}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1.0">     
     <script src="{% static 'js/estilo.js' %}" defer></script>
 </head>
 <body>
     <header>
-        <h1>Switch Multicapa 1</h1>
+        <h1>Switch Multicapa {{id}}</h1>
         <nav>
-            <a href="index.html">Topologia</a>
+            <a href={% url 'index' %}>Topologia</a>
         </nav>
     </header>
     
@@ -33,7 +33,7 @@
             </div>
 
             <form id="config-unica" class="hidden sub-config-section"
-             action="" method="POST">
+            action="" method="POST">
                 <hr>
                 <h4>Interfaz Única</h4>
                 <label>Tipo de interfaz:</label>

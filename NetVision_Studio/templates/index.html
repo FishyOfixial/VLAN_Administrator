@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vlan Manager</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">     
+
+</head>
+<body>
+     <header>
+        <h1>Topologia</h1>
+        <nav>
+            <a href="index.html">Topologia</a>
+            <a href="">Syslog</a>
+        </nav>
+    </header>
+    <main>
+        <div id="routers">
+            <img src="{% static 'resources/switch.png' %}" class="device">
+            <a href=""><img src="{% static 'resources/router.png' %}" class="device"></a>
+            <a href=""><img src="{% static 'resources/router.png' %}" class="device"></a>
+            <img src="{% static 'resources/switch.png' %}" class="device">
+        </div>
+        <div id="distribution">
+            <a href="SWD.html"><img src="{% static 'resources/multilayer.png'%}" class="device"></a>
+            <a href="SWD.html"><img src="{% static 'resources/multilayer.png'%}" class="device"></a>
+        </div>
+        <div id="accessLayer">
+            <a href="access.html"><img src="{% static 'resources/switch.png' %}" class="device"></a>
+            <a href="access.html"><img src="{% static 'resources/switch.png' %}" class="device"></a>
+        </div>
+    </main>
+</body>
+</html>

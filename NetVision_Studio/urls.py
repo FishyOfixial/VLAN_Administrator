@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('<int:id>/', views.multilayer_HTML, name = 'multilayer'),
     path('acceso/', views.access_HTML, name='access'),
+    path('', views.index_HTML, name='index'),
     
     # Envio de formularios
     path('form/<int:id>/create-vlan/', views.create_vlan, name='create_vlan'),

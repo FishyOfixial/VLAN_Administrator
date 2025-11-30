@@ -12,6 +12,8 @@ def multilayer_HTML(request, id):
 def access_HTML(request): 
     return render(request, 'access.html')
 
+def index_HTML(request):
+    return render(request, 'index.html')
 
 def create_vlan(request, id):
     if request.method != 'POST': # Si el metodo de carga no es POST, redirigimos a la carga del HTML

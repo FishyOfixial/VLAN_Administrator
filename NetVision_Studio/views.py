@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from .models import *
 from .networking import * # Aqui se mandan los comandos de red por SSH
 
@@ -20,9 +21,9 @@ def create_vlan(request, id):
     vlan_name = request.POST.get('nomVLAN') # get() consigue el dato del input con el name='' del html
 
     # Crear la vlan en la base de datos
-    Vlan.objects.create(
-        vlan_id = vlan_id,
-        name = vlan_name
+    vlan, created = Vlan.objects.get_or_create(
+        vlan_id=vlan_id,
+        defaults={'name': vlan_name}
     )
 
     # Enviar el comando para crear la vlan via SSH al multicapa con ese ID
@@ -39,8 +40,25 @@ def delete_vlan(request, id):
     vlan_id = request.POST.get('numVLANElim') # get() consigue el dato del input con el name='' del html
     
     # Conseguir la VLAN de la base de datos
-    vlan = Vlan.objects.get_object_or_404(vlan_id=vlan_id)
+    vlan = get_object_or_404(Vlan, vlan_id=vlan_id)
     # Mandar el comando de eliminacion al multicapa
     delete_vlan(id, vlan_id)
     # Eliminar la VLAN de la base de datos
     vlan.delete()
+
+
+def switches_status(request):
+    switches = Device.objects.filter(device_type='switch')
+    data = []
+
+    for d in switches:
+        interfaces = d.interfaces.all()
+        device_data = {
+            'device_id': d.pk,
+            'hostname': d.hostname,
+            'interfaces': [
+                {'name': inter.name, 'state': inter.state} for inter in interfaces
+            ]
+        }
+        data.append(device_data)
+    return JsonResponse(data, safe=False)

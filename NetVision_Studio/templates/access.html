@@ -89,6 +89,13 @@
     </div>
     <div id="div-console" data-device-id="{{ id }}">
         <h2>Configuraciones Actuales de Puertos</h2>
+         {% for interface in interfaces %}
+            {% if interface.state %} 
+                <div class="console-entry">
+                    <h3>Interfaz {{interface.name}} 🟢</h3>
+                    <pre>{% if interface.is_access %} Acceso {% else %} Troncal {% endif %}</pre>
+                </div>
+            {% endif %}
     </div>
 </body>
 </html>

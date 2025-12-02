@@ -5,8 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Switch Multicapa {{id}}</title>
+
     <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1.2">     
     <script src="{% static 'js/estilo.js' %}" defer></script>
+
+
 </head>
 <body>
     <header>
@@ -20,86 +23,7 @@
         <h2>Opciones de configuración</h2>
         
         <div class="main-buttons-container">
-            <button type="button" id="btn-show-interfaces">Ingresar a interfaces</button>
             <button type="button" id="btn-show-vlans">Administración de VLANs</button>
-        </div>
-
-        <div id="interfaces" class="hidden">
-            <h3>Configuración de Interfaces</h3>
-            
-            <div id="interface-type-menu">
-                <button type="button" id="btn-unica">Interfaz Única</button>
-                <button type="button" id="btn-rango">Rango de interfaces</button>
-            </div>
-
-            <form id="config-unica" class="hidden sub-config-section"
-            action="" method="POST">
-                {% csrf_token %}
-                <hr>
-                <h4>Interfaz Única</h4>
-                <label>Tipo de interfaz:</label>
-                <input type="radio" name="IntUnica" id="giga1"  value="gig-Unica"><label for="giga1">Gigabit</label>
-                <input type="radio" name="IntUnica" id="fast1"  value="fa-Unica"><label for="fast1">FastEthernet</label>
-                <label class="label-with-margin">Número:</label>
-                <input type="number" name="numInterfaz" min="1" max="24" class="input-short"><br><br>
-                
-                <button type="button" id="btn-siguiente-unica">Siguiente</button>
-                <button type="button" class="btn-regresar secondary">Regresar</button>
-                
-                <div id="config-disponible" class="hidden">
-                    <hr class="hr-separator">
-                    <h3>Configuraciones Disponibles</h3>
-
-                    <h4>Estado</h4>
-                    <input type="radio" name="estado" value="OnUnica" id="hab-unica"><label for="hab-unica">Habilitar</label>
-                    <input type="radio" name="estado" value="OffUnica" id="des-unica"><label for="des-unica">Deshabilitar</label>
-
-                    <h4>Modo</h4>
-                    <input type="radio" name="modo" value="AccUnica" id="acc-unica"><label for="acc-unica">Acceso</label>
-                    <input type="radio" name="modo" value="TrunkUnica" id="trunk-unica"><label for="trunk-unica">Troncal</label>
-                    <br><br>
-
-                    <div class="footer-buttons">
-                        <button type="submit" class="button-full-width">Aplicar Cambios</button>
-                    </div>
-                </div>
-
-            </form>
-
-            <form id="config-rango" class="hidden sub-config-section"
-             action="" method="POST">
-                {% csrf_token %}
-                <hr>
-                <h4>Rango de Interfaces</h4>
-                <label>Tipo de interfaz:</label>
-                <input type="radio" name="tipo" value="IntGigRang" id="giga2" ><label for="giga2">Gigabit</label>
-                <input type="radio" name="tipo" value="IntFaRang" id="fast2" ><label for="fast2">FastEthernet</label><br><br>
-                <label>Del:</label><input type="number" name="intRangInicio" min="1" max="24" class="input-short">
-                <label>Al:</label><input type="number" name="intRangFin" min="1" max="24" class="input-short">
-                
-                <button type="button" id="btn-siguiente-rango">Siguiente</button>
-                <button type="button" class="btn-regresar secondary">Regresar</button>
-
-                <div id="range-config-disponible" class="hidden">
-                    <hr class="hr-separator">
-                    <h3>Configuraciones Disponibles</h3>
-
-                    <h4>Estado</h4>
-                    <input type="radio" name="estado" value="OnRango" id="hab-rango" ><label for="hab-rango">Habilitar</label>
-                    <input type="radio" name="estado" value="OffRango" id="des-rango" ><label for="des-rango">Deshabilitar</label>
-
-                    <h4>Modo</h4>
-                    <input type="radio" name="modo" value="AccRango" id="acc-rango" ><label for="acc-rango">Acceso</label>
-                    <input type="radio" name="modo" value="TrunkRango" id="trunk-rango" ><label for="trunk-rango">Troncal</label>
-                    <br><br>
-
-                    <div class="footer-buttons">
-                        <button type="submit" class="button-full-width">Aplicar Cambios</button>
-                    </div>
-                </div>
-            </form>
-
-           
         </div>
 
         <div id="vlans" class="hidden">
@@ -142,6 +66,7 @@
             </form>
         </div>
     </div>
+
     <div id="div-console">
         <h2>Configuraciones Actuales</h2>
             <div class="tabs">
@@ -171,6 +96,11 @@
                 </div>
 
             </div> 
-    </div>
+
 </body>
 </html>
+
+<script>
+    const deviceId = {{id}}
+</script>
+<script src="{% static 'js/polling.js' %}"></script>

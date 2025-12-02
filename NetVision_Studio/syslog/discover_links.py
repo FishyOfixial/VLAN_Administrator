@@ -21,9 +21,9 @@ def parse_cdp(output):
 
 def create_link(device_a, int_a, device_b, int_b):
     """Guarda un enlace CDP evitando duplicados A<->B."""
-
     dev_a = Device.objects.filter(hostname=device_a).first()
     dev_b = Device.objects.filter(hostname=device_b).first()
+    print(dev_a, dev_b)
     if not dev_a or not dev_b:
         return
 
@@ -96,6 +96,7 @@ def sync_links():
         # Crear enlaces
         for local_int, (remote_host, remote_int) in neighbors.items():
             print(f"  ➜ {local_int} → {remote_host}:{remote_int}")
-            create_link(device.hostname, local_int, remote_host, remote_int)
+            remote_name = remote_host.split('.')[0]
+            create_link(device.hostname, local_int, remote_name, remote_int)
 
     print("\n✓ Links sincronizados.\n")

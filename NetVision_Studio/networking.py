@@ -34,7 +34,6 @@ def create_vlan_ssh(device_id, vlan_id):
 
     create_dhcp(vlan_id)
     configure_hsrp(vlan_id)
-    #add_vlan_to_trunks(vlan_id)
     return _run_vlan_command(device_id, commands)
 
 def create_dhcp(vlan_id):
@@ -119,39 +118,6 @@ def configure_hsrp(vlan_id):
     _run_vlan_command(active.pk, commands_active)
     _run_vlan_command(standby.pk, commands_standby)
 
-def add_vlan_to_trunks(vlan_id):
-    vlan = Vlan.objects.get(vlan_id=vlan_id)
-    links = TopologyLink.objects.all()
-
-    for link in links:
-        intA = link.interface_a
-        intB = link.interface_b
-
-        if intA.mode == 'trunk' and intB.mode == 'trunk':
-            sshA = SSHClient(hostname=intA.device.hostname,
-                            ip=intA.device.ip_address,
-                            username=intA.device.username,
-                            password=intA.device.password)
-            sshA.connect()
-            sshA.send_config([
-                f"interface {intA.name}",
-                f"switchport trunk allowed vlan add {vlan_id}"
-            ])
-            sshA.close()
-
-            sshB = SSHClient(
-                hostname=intB.device.hostname,
-                ip=intB.device.ip_address,
-                username=intB.device.username,
-                password=intB.device.password
-            )
-            sshB.connect()
-            sshB.send_config([
-                f"interface {intB.name}",
-                f"switchport trunk allowed vlan add {vlan_id}"
-            ])
-            sshB.close()
-
 
 # Borrar VLAN del dispositivo
 def delete_vlan_ssh(device_id, vlan_id):
@@ -162,24 +128,13 @@ def delete_vlan_ssh(device_id, vlan_id):
 
     return _run_vlan_command(device_id, commands)
 
-def assign_vlan_ssh(id, interface_name, vlan_id, type):
-    if type == 'access':
-        commands = [
-            f"interface {interface_name}",
-            "switchport mode access",
-            f"switchport access vlan {vlan_id}",
-            "exit"
-        ]
-    elif type == 'trunk':
-        commands = [
-            f"interface {interface_name}",
-            "switchport mode trunk",
-            f"switchport trunk allowed vlan add {vlan_id}",
-            "exit"
-        ]
-    else:
-        raise ValueError("Invalid interface type. Must be 'access' or 'trunk'.")
-
+def assign_vlan_ssh(id, interface_name, vlan_id):
+    commands = [
+        f"interface {interface_name}",
+        "switchport mode access",
+        f"switchport access vlan {vlan_id}",
+        "exit"
+    ]
     return _run_vlan_command(id, commands)
 
 # Sincronizar puertos con la base de datos
@@ -214,7 +169,8 @@ def sync_ports(device_id):
     return "Sync completed"  # Regresamos confirmación
 
 def change_port_status_ssh(id, interface_name, status): 
-    state = 'shutdown' if status else 'no shutdown'
+    state = 'no shutdown' if status else 'shutdown'
+    print(state)
     commands = [
             f"interface {interface_name}",
             state, 

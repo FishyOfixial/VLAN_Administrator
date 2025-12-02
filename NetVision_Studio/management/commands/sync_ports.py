@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from ...networking import sync_ports
 from ...syslog.discover_links import sync_links
+from ...syslog.discover_vlans import sync_vlans
 from ...models import Device
 
 class Command(BaseCommand):
@@ -14,3 +15,6 @@ class Command(BaseCommand):
 
         print("\n=== Sync Links ===")
         sync_links()
+
+        print("\n=== Sync VLANS ===")
+        sync_vlans()

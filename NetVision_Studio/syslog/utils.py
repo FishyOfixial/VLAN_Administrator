@@ -18,9 +18,6 @@ def parse_mac(output):
 
 
 def find_ip_for_mac(arp_output, mac):
-    print(arp_output)
-    print(mac)
     compact = mac.replace(".", "")
     match = re.search(rf'{compact}.*?(\d+\.\d+\.\d+\.\d+)', arp_output)
-    print(match)
     return match.group(1) if match else None

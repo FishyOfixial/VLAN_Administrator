@@ -21,8 +21,6 @@ def parse_cdp(output):
 
 def create_link(device_a, int_a, device_b, int_b):
     """Guarda un enlace CDP evitando duplicados A<->B."""
-    device_a = device_a.split(".")[0].upper()
-    device_b = device_b.split(".")[0].upper()
 
     dev_a = Device.objects.filter(hostname=device_a).first()
     dev_b = Device.objects.filter(hostname=device_b).first()

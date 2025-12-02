@@ -57,28 +57,26 @@ def assign_vlan(request, id):
     if request.method != 'POST': # Si el metodo de carga no es POST, redirigimos a la carga del HTML
         return redirect('access', id)
 
-    type = 'access'
+    type = request.POST.get('tipoIntRango')
     vlan_id = request.POST.get('vlanAcceso')
     start = request.POST.get('intRangInicio')
     end = request.POST.get('intRangFin')
-
     if vlan_id == 2:
         return redirect('access', id)
-    
     vlan = get_object_or_404(Vlan, vlan_id=vlan_id)
     device = get_object_or_404(Device, pk=id)
     
     # Ir recorriendo el rango de interfaces y asignandoles la VLAN
     for i in range(int(start), int(end)+1):
-        interface_name = f"FastEthernet0/{i}"
-
+        interface_name = f"fastEthernet0/{i}"
         #Verificar que la interfaz existe
         interface = get_object_or_404(Interface, device_id=id, name=interface_name)
+
         # Asignar la VLAN a la interfaz en la base de datos
         Vlan_IntAssignment.objects.get_or_create(
             interface=interface,
             vlan=vlan,
-            defaults={'is_native': False}
+            defaults={'is_native': type == 'native'}
         )
 
         # Mandar el comando de asignacion via SSH al switch de acceso

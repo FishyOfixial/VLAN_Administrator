@@ -21,6 +21,7 @@ def _run_vlan_command(device_id, commands):
     client.close()
     return output
 
+
 # Crear VLAN en el dispositivo
 def create_vlan_ssh(device_id, vlan_id):
     vlan = Vlan.objects.get(vlan_id=vlan_id)
@@ -33,6 +34,7 @@ def create_vlan_ssh(device_id, vlan_id):
 
     create_dhcp(vlan_id)
     configure_hsrp(vlan_id)
+    #add_vlan_to_trunks(vlan_id)
     return _run_vlan_command(device_id, commands)
 
 def create_dhcp(vlan_id):
@@ -67,7 +69,6 @@ def create_dhcp(vlan_id):
             f"ip dhcp pool VLAN{vlan.vlan_id}",
             f"network {network} {mask}",
             f"default-router {gateway}",
-            'exit',
         ]
 
         _run_vlan_command(d.pk, commands)
@@ -105,7 +106,6 @@ def configure_hsrp(vlan_id):
         f" standby {vlan_id} ip {vip}",
         f" standby {vlan_id} priority {ACTIVE_PRIO}",
         f" standby {vlan_id} preempt",
-        'exit',
     ]
 
     commands_standby = [
@@ -114,22 +114,55 @@ def configure_hsrp(vlan_id):
         f" standby {vlan_id} ip {vip}",
         f" standby {vlan_id} priority {STANDBY_PRIO}",
         f" standby {vlan_id} preempt",
-        'exit',
     ]
 
     _run_vlan_command(active.pk, commands_active)
     _run_vlan_command(standby.pk, commands_standby)
 
+def add_vlan_to_trunks(vlan_id):
+    vlan = Vlan.objects.get(vlan_id=vlan_id)
+    links = TopologyLink.objects.all()
+
+    for link in links:
+        intA = link.interface_a
+        intB = link.interface_b
+
+        if intA.mode == 'trunk' and intB.mode == 'trunk':
+            sshA = SSHClient(hostname=intA.device.hostname,
+                            ip=intA.device.ip_address,
+                            username=intA.device.username,
+                            password=intA.device.password)
+            sshA.connect()
+            sshA.send_config([
+                f"interface {intA.name}",
+                f"switchport trunk allowed vlan add {vlan_id}"
+            ])
+            sshA.close()
+
+            sshB = SSHClient(
+                hostname=intB.device.hostname,
+                ip=intB.device.ip_address,
+                username=intB.device.username,
+                password=intB.device.password
+            )
+            sshB.connect()
+            sshB.send_config([
+                f"interface {intB.name}",
+                f"switchport trunk allowed vlan add {vlan_id}"
+            ])
+            sshB.close()
+
+
 # Borrar VLAN del dispositivo
 def delete_vlan_ssh(device_id, vlan_id):
     commands = [
         f"no vlan {vlan_id}",
+        "exit"
     ]
 
     return _run_vlan_command(device_id, commands)
 
 def assign_vlan_ssh(id, interface_name, vlan_id, type):
-    print(id, interface_name, vlan_id, type)
     if type == 'access':
         commands = [
             f"interface {interface_name}",
@@ -202,7 +235,6 @@ def refresh_host_for_interface(device, interface):
     
     # Conseguir la MAC del host
     mac_table = conn.send_command(f'show mac address-table interface {interface.name}')
-    print(mac_table)
     mac = parse_mac(mac_table)
 
     if not mac:

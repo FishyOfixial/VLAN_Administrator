@@ -32,7 +32,7 @@
             </div>
 
             <form id="config-unica" class="hidden sub-config-section"
-            action="{% url 'assign_vlan' id %}" method="POST">
+            action="" method="POST">
                 {% csrf_token %}
                 <hr>
                 <h4>Interfaz Única</h4>
@@ -66,7 +66,7 @@
             </form>
 
             <form id="config-rango" class="hidden sub-config-section"
-            action="{% url 'assign_vlan' id %}" method="POST">
+            action="" method="POST">
                 {% csrf_token %}
                 <hr>
                 <h4>Rango de Interfaces</h4>

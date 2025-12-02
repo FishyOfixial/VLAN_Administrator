@@ -12,8 +12,10 @@ def multilayer_HTML(request, id):
     return render(request, "SWD.html", context)
 
 def access_HTML(request, id): 
+    interfaces = Interface.objects.filter(device=id)
     context = {
-        'id': id
+        'id': id,
+        'interfaces': interfaces
     }
     return render(request, 'access.html', context)
 

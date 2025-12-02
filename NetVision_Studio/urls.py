@@ -10,6 +10,7 @@ urlpatterns = [
     # Envio de formularios
     path('form/<int:id>/create-vlan/', views.create_vlan, name='create_vlan'),
     path('form/<int:id>/delete-vlan/', views.delete_vlan, name='delete_vlan'),
+    path('form/<int:id>/assig-vlan', views.assign_vlan, name='assign_vlan'),
     path('form/<int:id>/change-port-status/', views.change_port_status, name='change_port'),
 
     # Polling de JS

@@ -30,14 +30,14 @@ class Command(BaseCommand):
                     broadcast = f"10.{vlan_id}.0.255"
 
                     # Ping broadcast para forzar ARP
-                    client.run(f"ping {broadcast} repeat 2")
+                    client.send_command(f"ping {broadcast} repeat 2")
 
                 client.close()
 
             except Exception as e:
                 print(f"[ERROR] ARP broadcast en {device.hostname}: {e}")
 
-        with ThreadPoolExecutor(max_workers=10) as executor:
+        with ThreadPoolExecutor(max_workers=2) as executor:
             executor.map(force_arp, switches)
 
         self.stdout.write(self.style.SUCCESS("✓ ARP broadcast enviado para TODAS las VLAN"))
@@ -47,7 +47,7 @@ class Command(BaseCommand):
         def process_interface(intf):
             refresh_host_for_interface(intf.device, intf)
 
-        with ThreadPoolExecutor(max_workers=30) as executor:
+        with ThreadPoolExecutor(max_workers=50) as executor:
             executor.map(process_interface, interfaces)
 
         self.stdout.write(self.style.SUCCESS("✓ Interfaces sincronizadas"))

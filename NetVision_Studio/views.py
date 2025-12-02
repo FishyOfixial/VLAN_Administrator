@@ -128,8 +128,4 @@ def change_port_status(request, id):
 
     return redirect('index')
 
-def prueba(request):
-    interfaces = Interface.objects.all()
-    return render(request, "SWD.html", {'interfaces': interfaces, 'id': 1})
-
 

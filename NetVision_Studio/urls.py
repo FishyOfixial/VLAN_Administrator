@@ -13,6 +13,5 @@ urlpatterns = [
     path('form/<int:id>/change-port-status/', views.change_port_status, name='change_port'),
 
     # Polling de JS
-    path('api/switches/status/', views.switches_status, name='switches_status'),
-    path("interfaces/", views.prueba, name = "prueba"),
+    path('poll/interfaces/<int:id>/', views.polling_interfaces, name='polling_interfaces'),
 ]

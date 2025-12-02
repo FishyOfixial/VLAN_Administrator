@@ -130,4 +130,17 @@ def change_port_status(request, id):
 
     return redirect('index')
 
+def polling_interfaces(request, id):
+    interfaces = Interface.objects.select_related('device').filter(device__id=id)
+
+    data = []
+    for iface in interfaces:
+        data.append({
+            'name': iface.name,
+            'state': iface.state,
+            'is_access': iface.is_access,
+        })
+    
+    return JsonResponse({'interfaces': data}, safe=False)
+
 

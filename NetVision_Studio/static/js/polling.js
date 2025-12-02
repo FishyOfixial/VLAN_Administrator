@@ -1,45 +1,49 @@
-// Estado local de switches
-let switches = [];
+document.addEventListener("DOMContentLoaded", () => {
+    initPolling();
+});
 
-// Función para actualizar switches desde el backend
-async function fetchSwitchesStatus() {
-    try {
-        const response = await fetch('/api/switches/status/');
-        const data = await response.json();
+function initPolling() {
+    const container = document.getElementById('div-console');
 
-        // Actualizamos la variable switches
-        switches = data;
+    if (!container) return;
 
-        // Renderizamos la UI
-        renderSwitches();
-    } catch (err) {
-        console.error('Error al obtener el estado de switches:', err);
+    async function fetchSwitchInterfaces() {
+        try {
+            const response = await fetch(`/poll/interfaces/${deviceId}/`);
+            const data = await response.json();
+            renderInterfaces(data.interfaces);
+        } catch (err) {
+            console.error('Error obteniendo interfaces:', err);
+        }
     }
-}
 
-// Función para renderizar los switches en la página
-function renderSwitches() {
-    const container = document.getElementById('switches-container');
-    container.innerHTML = ''; // Limpiar el contenedor
+    function renderInterfaces(interfaces) {
+        let listContainer = document.getElementById('interfaces-list');
 
-    switches.forEach(sw => {
-        const div = document.createElement('div');
-        div.classList.add('switch');
-        div.innerHTML = `<h3>${sw.hostname}</h3>`;
+        // Si no existe el contenedor lo creamos SOLO una vez
+        if (!listContainer) {
+            listContainer = document.createElement("div");
+            listContainer.id = "interfaces-list";
+            container.appendChild(listContainer);
+        }
 
-        const ul = document.createElement('ul');
-        sw.interfaces.forEach(iface => {
-            const li = document.createElement('li');
-            li.textContent = `${iface.name}: ${iface.state ? 'UP' : 'DOWN'}`;
-            li.style.color = iface.state ? 'green' : 'red';
-            ul.appendChild(li);
+        listContainer.innerHTML = "";
+
+        interfaces.forEach(iface => {
+            if (!iface.state) return;
+
+            const div = document.createElement("div");
+            div.className = "console-entry";
+
+            div.innerHTML = `
+                <h3>Interfaz ${iface.name} 🟢</h3>
+                <pre>${iface.is_access ? "Acceso" : "Troncal"}</pre>
+            `;
+
+            listContainer.appendChild(div);
         });
+    }
 
-        div.appendChild(ul);
-        container.appendChild(div);
-    });
+    fetchSwitchInterfaces();
+    setInterval(fetchSwitchInterfaces, 5000);
 }
-
-// Polling cada 5 segundos
-fetchSwitchesStatus(); // fetch inicial
-setInterval(fetchSwitchesStatus, 5000);

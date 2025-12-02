@@ -56,7 +56,12 @@ def delete_vlan(request, id):
     vlan.delete()
     return redirect('multilayer', id)
 
-def assign_vlan(request, id):
+
+def hub_form_access(request, id):
+    return redirect('access', id)
+
+
+def assign_vlan(id):
     if request.method != 'POST': # Si el metodo de carga no es POST, redirigimos a la carga del HTML
         return redirect('access', id)
 
@@ -90,7 +95,23 @@ def assign_vlan(request, id):
         # Refrescar la IP del host conectado despues del cambio
         refresh_host_for_interface(device, interface)
 
-    return redirect('access', id)
+
+def change_port_status(id):
+    if request.method != 'POST': # Si el metodo de carga no es POST, redirigimos a la carga del HTML
+        return redirect('access', id)
+
+    type = request.POST.get('tipoIntRango')
+    on = request.POST.get('OnRango')
+    start = request.POST.get('intRangInicio')
+    end = request.POST.get('intRangFin')
+
+    status = status == 'on'
+    for i in range(int(start), int(end)+1):
+        print(status == 'on')
+        interface_name = f"FastEthernet0/{i}"
+
+        print(interface_name)
+        change_port_status_ssh(id, interface_name, status)
 
 
 def switches_status(request):
@@ -110,26 +131,6 @@ def switches_status(request):
         }
         data.append(device_data)
     return JsonResponse(data, safe=False)
-
-
-def change_port_status(request, id):
-    if request.method != 'POST': # Si el metodo de carga no es POST, redirigimos a la carga del HTML
-        return redirect('access', id)
-
-    type = request.POST.get('tipoIntRango')
-    on = request.POST.get('OnRango')
-    start = request.POST.get('intRangInicio')
-    end = request.POST.get('intRangFin')
-
-    status = status == 'on'
-    for i in range(int(start), int(end)+1):
-        print(status == 'on')
-        interface_name = f"FastEthernet0/{i}"
-
-        print(interface_name)
-        change_port_status_ssh(id, interface_name, status)
-
-    return redirect('index')
 
 def polling_interfaces(request, id):
     interfaces = Interface.objects.select_related('device').filter(device__id=id)

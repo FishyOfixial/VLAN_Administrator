@@ -69,33 +69,23 @@
 
     <div id="div-console">
         <h2>Configuraciones Actuales</h2>
-            <div class="tabs">
-                <button class="tab active" data-target="#puertos">Puertos</button>
-                <button class="tab" data-target="#vlans">VLANs</button>
+        <div class="tabs">
+            <button class="tab active" data-target="#puertos">Puertos</button>
+            <button class="tab" data-target="#vlans">VLANs</button>
+        </div>
+
+        <div class="content">
+            <div class="tab-panel active" id="tab-puertos"></div>
+
+            <div class="hidden" id="tab-vlans">
+                {% for vlan in actVlans %}
+                    {% if vlan %}
+                        <h3> VLAN {{ vlan.vlan_id }}: {{ vlan.name }}</h3>
+                    {% endif %}
+                {% endfor %}
             </div>
-
-            <div class="content">
-
-                <div class="tab-panel active" id="tab-puertos">
-                    {% for interface in interfaces %}
-                        {% if interface.state %} 
-                            <div class="console-entry">
-                                <h3>Interfaz {{interface.name}} 🟢</h3>
-                                <pre>{% if interface.is_access %} Acceso {% else %} Troncal {% endif %}</pre>
-                            </div>
-                        {% endif %}
-                    {% endfor %}           
-                </div>
-
-                <div class="hidden" id="tab-vlans">
-                    {% for vlan in actVlans %}
-                        {% if vlan %}
-                            <h3> VLAN {{ vlan.vlan_id }}, {{ vlan.name }}</h3>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-
-            </div> 
+        </div>
+    </div> 
 
 </body>
 </html>

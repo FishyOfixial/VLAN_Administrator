@@ -36,7 +36,7 @@
                 {% csrf_token %}
                 <hr>
                 <h4>Interfaz Única</h4>
-                <label class="label-with-margin">Número:</label>
+                <label class="label-with-margin">FastEthernet0/:</label>
                 <input type="number" name="numInterfaz" min="5" max="24" class="input-short" placeholder="5-24" required><br><br>
                 
                 <button type="button" id="btn-siguiente-unica">Siguiente</button>
@@ -62,7 +62,7 @@
 
                 {% csrf_token %}
                 <hr>
-                <h4>Rango de Interfaces</h4>
+                <h4>Rango de Interfaces FastEthernet</h4>
                 <label>Del:</label><input type="number" name="intRangInicio" min="5" max="24" class="input-short" placeholder="5-24" required>
                 <label>Al:</label><input type="number" name="intRangFin" min="5" max="24" class="input-short" placeholder="5-24" required>
                 
@@ -89,14 +89,7 @@
     </div>
     <div id="div-console" data-device-id="{{ id }}">
         <h2>Configuraciones Actuales de Puertos</h2>
-         {% for interface in interfaces %}
-            {% if interface.state %} 
-                <div class="console-entry">
-                    <h3>Interfaz {{interface.name}} 🟢</h3>
-                    <pre>{% if interface.is_access %} Acceso {% else %} Troncal {% endif %}</pre>
-                </div>
-            {% endif %}
-        {% endfor %}
+        <div class="tab-panel active" id="tab-puertos"></div>
     </div>
 </body>
 </html>

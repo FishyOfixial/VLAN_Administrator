@@ -177,6 +177,19 @@ label {
     overflow-y: auto;
 }
 
+.console-entry{
+    border-bottom: 1px solid #1565c0
+}
+
+.console-entry h3{
+    border: none;
+    margin: 4px 2px;
+}
+
+.console-entry pre{
+    margin: 0.75rem 2px;
+}
+
 main{
     background-color: white;
     width: 100%;
@@ -261,6 +274,6 @@ main{
     background: white;
     border-radius: 15px;
     padding: 15px;
-    height: 600px; /* tu altura con scroll */
+    height: max-content; /* tu altura con scroll */
 }
 

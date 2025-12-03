@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initPolling() {
-    const container = document.getElementById('div-console');
+    const container = document.getElementById('tab-puertos');
 
     if (!container) return;
 

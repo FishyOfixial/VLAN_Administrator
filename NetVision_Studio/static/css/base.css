@@ -277,3 +277,50 @@ main{
     height: max-content; /* tu altura con scroll */
 }
 
+/* Contenedor general */
+.alert {
+    position: fixed;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: fit-content;
+    max-width: 40rem;
+    padding: 12px 18px;
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+
+    animation: fadeInOut 5s ease forwards; /* 5 segundos total */
+}
+
+/* Tipos de mensajes */
+.alert-danger {
+    background-color: #e74c3c; /* rojo */
+    border-left: 5px solid #c0392b;
+}
+
+.alert-success {
+    background-color: #2ecc71; /* verde */
+    border-left: 5px solid #27ae60;
+}
+
+.alert-warning {
+    background-color: #f39c12; /* amarillo */
+    border-left: 5px solid #d68910;
+}
+
+.alert-info {
+    background-color: #3498db; /* azul */
+    border-left: 5px solid #2e86c1;
+}
+
+/* Animación suave */
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    80% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+}

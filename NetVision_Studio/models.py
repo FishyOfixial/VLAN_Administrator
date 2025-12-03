@@ -21,8 +21,6 @@ class Interface(models.Model):
     name = models.CharField(max_length=20)
     state = models.BooleanField(default=False)  # True = up
     is_access = models.BooleanField(default=True)
-    native = models.PositiveIntegerField(default=1)
-    allowed_vlan = models.CharField(max_length=200, blank=True, null=True)  # ejemplo: "10,20,30-40"
 
     class Meta: # No puedes tener 2 interfaces (fa0/0) en el mismo dispositivo
         unique_together = ('device', 'name')
@@ -52,7 +50,6 @@ class Vlan(models.Model):
 class Vlan_IntAssignment(models.Model):
     interface = models.ForeignKey(Interface, on_delete=models.CASCADE, related_name='vlan_assignment')
     vlan = models.ForeignKey(Vlan, on_delete=models.CASCADE)
-    is_native = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.interface} -> VLAN {self.vlan.vlan_id} (Native={self.is_native})"
